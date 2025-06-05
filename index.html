@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>El Martillo de Oro</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    header {
+      background-color: #FFD700;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      margin-bottom: 10px;
+    }
+    .menu {
+      background-color: #222;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+    }
+    .menu-logo {
+      color: #FFD700;
+      font-size: 24px;
+      font-weight: bold;
+      user-select: none;
+    }
+    .menu-items {
+      display: flex;
+      gap: 15px;
+    }
+    .menu-items button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 10px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .menu-items button:hover {
+      background-color: #FFD700;
+      color: #000;
+      border-radius: 5px;
+    }
+    .active {
+      display: block;
+    }
+    section {
+      display: none;
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    section.active {
+      display: block;
+    }
+    .productos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .producto {
+      background-color: #fff;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      text-align: center;
+      user-select: none;
+    }
+    .producto img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+    .producto button {
+      margin-top: 10px;
+      background-color: #FFD700;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .producto button:hover {
+      background-color: #f3c900;
+    }
+    .busqueda {
+      margin: 20px auto;
+      max-width: 400px;
+      text-align: center;
+    }
+    .busqueda input {
+      width: 80%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 30px;
+      user-select: none;
+    }
+    .oferta {
+      background-color: #FF6347;
+      color: white;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      text-align: center;
+      user-select: none;
+    }
+    .oferta p {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .oferta span {
+      font-size: 22px;
+      color: yellow;
+    }
+    .carrito-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
+    }
+    .carrito-item > div {
+      flex: 1;
+    }
+    .carrito-item .nombre {
+      font-weight: 600;
+      user-select: text;
+    }
+    .carrito-item .precio, .carrito-item .subtotal {
+      width: 100px;
+      text-align: right;
+      user-select: text;
+    }
+    .carrito-item .cantidad-controls {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      justify-content: center;
+    }
+    .carrito-item button {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      user-select: none;
+      transition: background-color 0.3s;
+    }
+    .carrito-item button:hover {
+      background-color: #c0392b;
+    }
+    .carrito-item .btn-cant {
+      background-color: #333;
+      width: 25px;
+      height: 25px;
+      padding: 0;
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+    .carrito-item .btn-cant:hover {
+      background-color: #555;
+    }
+    .carrito-item .cantidad {
+      width: 30px;
+      text-align: center;
+      user-select: text;
+      font-weight: bold;
+    }
+    .carrito-controls {
+      margin-top: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .carrito-controls button {
+      background-color: #008000;
+      padding: 10px 20px;
+      border-radius: 5px;
+      border: none;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      user-select: none;
+    }
+    .carrito-controls button:hover {
+      background-color: #006600;
+    }
+    .cuenta-form input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      user-select: text;
+    }
+    .intro {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 18px;
+      color: #555;
+      user-select: none;
+    }
+    .intro h2 {
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>El Martillo de Oro</h1>
+    <p>Herramientas, materiales y mucho más</p>
+  </header>
+
+  <div class="menu">
+    <div class="menu-logo">🔨 El Martillo de Oro</div>
+    <div class="menu-items">
+      <button onclick="mostrar('inicio')">🏠 Inicio</button>
+      <button onclick="mostrar('productos')">🛒 Productos</button>
+      <button onclick="mostrar('ofertas')">🔥 Ofertas</button>
+      <button onclick="mostrar('carrito')">🛒 Carrito</button>
+      <button onclick="mostrar('cuenta')">👤 Cuenta</button>
+      <button onclick="mostrar('contacto')">📞 Contacto</button>
+    </div>
+  </div>
+
+  <section id="inicio" class="active">
+    <h2>Bienvenido a El Martillo de Oro</h2>
+    <p>En nuestra ferretería, encontrarás una amplia variedad de herramientas, materiales y equipos para cualquier proyecto. Ya sea que estés reparando tu hogar o trabajando en un proyecto de construcción, tenemos todo lo que necesitas.</p>
+    <div class="intro">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Ofrecemos productos de alta calidad a precios competitivos, con un excelente servicio al cliente. ¡Tu satisfacción es nuestra prioridad!</p>
+      <h2>¡Visítanos hoy y aprovecha nuestras promociones especiales!</h2>
+    </div>
+  </section>
+
+  <section id="productos">
+    <h2>Productos destacados</h2>
+    <div class="busqueda">
+      <input type="text" id="buscar" placeholder="Buscar producto..." oninput="filtrarProductos()" />
+    </div>
+    <div class="productos" id="contenedor-productos"></div>
+  </section>
+
+  <section id="ofertas">
+    <h2>Ofertas especiales</h2>
+    <div class="oferta">
+      <p>¡Compra ahora y ahorra un <span>30%</span> en nuestra</p>
+      <p>🔨 <em>Pistola de calor Bosch GHG 20-63</em></p>
+      <p>Solo hasta agotar existencias</p>
+    </div>
+    <div class="oferta">
+      <p>¡Hasta <span>50%</span> de descuento en</p>
+      <p>⚡ <em>Escalera de extensión 20 peldaños</em></p>
+      <p>Promoción válida solo hoy</p>
+    </div>
+  </section>
+
+  <section id="carrito">
+    <h2>Tu carrito de compras</h2>
+    <div id="lista-carrito"></div>
+    <div class="carrito-controls">
+      <p><strong>Total:</strong> $<span id="total">0</span> MXN</p>
+      <button onclick="vaciarCarrito()">Vaciar carrito</button>
+      <button onclick="comprar()">Realizar compra</button>
+    </div>
+  </section>
+
+  <section id="cuenta">
+    <h2>Mi cuenta</h2>
+    <div class="cuenta-form">
+      <input type="text" id="nombre" placeholder="Nombre completo" />
+      <input type="email" id="email" placeholder="Correo electrónico" />
+      <input type="password" id="password" placeholder="Contraseña" />
+      <button onclick="registrar()">Registrar cuenta</button>
+    </div>
+    <h3>Inicia sesión</h3>
+    <div class="cuenta-form">
+      <input type="email" id="login-email" placeholder="Correo electrónico" />
+      <input type="password" id="login-password" placeholder="Contraseña" />
+      <button onclick="login()">Iniciar sesión</button>
+    </div>
+  </section>
+
+  <section id="contacto">
+    <h2>Contacto</h2>
+    <p>Teléfono: +52 951 123 4567</p>
+    <p>Email: contacto@elmartillodeoro.com</p>
+    <p>Dirección: Calle Principal 123, Oaxaca, México</p>
+  </section>
+
+<script>
+  // Productos de ejemplo
+  const productos = [
+  { id: 1, nombre: 'Martillo de carpintero', precio: 250, img: 'https://i.imgur.com/UtMWCZ0.jpg' },
+  { id: 2, nombre: 'Taladro inalámbrico Bosch', precio: 1500, img: 'https://i.imgur.com/n9P2vR6.jpg' },
+  { id: 3, nombre: 'Cinta métrica 5m', precio: 120, img: 'https://i.imgur.com/Wk6JpmE.jpg' },
+  { id: 4, nombre: 'Llave ajustable 10"', precio: 300, img: 'https://i.imgur.com/kE8G7pR.jpg' },
+  { id: 5, nombre: 'Destornillador de precisión', precio: 80, img: 'https://i.imgur.com/hA3iCvl.jpg' },
+  { id: 6, nombre: 'Pistola de calor Bosch GHG 20-63', precio: 1800, img: 'https://i.imgur.com/w8cE0Rk.jpg' },
+  { id: 7, nombre: 'Escalera de extensión 20 peldaños', precio: 3200, img: 'https://i.imgur.com/YZ7oGpM.jpg' },
+
+  { id: 8, nombre: 'Sierra circular Dewalt', precio: 2800, img: 'https://i.imgur.com/TP6E7Ly.jpg' },
+  { id: 9, nombre: 'Nivel de burbuja Stanley', precio: 180, img: 'https://i.imgur.com/Hs3zzgV.jpg' },
+  { id: 10, nombre: 'Lijadora orbital', precio: 1200, img: 'https://i.imgur.com/wGYNzWb.jpg' },
+  { id: 11, nombre: 'Tijeras para metal', precio: 90, img: 'https://i.imgur.com/QMxVXJy.jpg' },
+  { id: 12, nombre: 'Llave inglesa 12"', precio: 350, img: 'https://i.imgur.com/cXxfWkV.jpg' },
+  { id: 13, nombre: 'Alicate de corte', precio: 150, img: 'https://i.imgur.com/kAJtGcx.jpg' },
+  { id: 14, nombre: 'Pistola de silicón', precio: 130, img: 'https://i.imgur.com/p0LZBzj.jpg' },
+  { id: 15, nombre: 'Juego de llaves hexagonales', precio: 220, img: 'https://i.imgur.com/lpbhfIG.jpg' },
+  { id: 16, nombre: 'Sierra para metales', precio: 210, img: 'https://i.imgur.com/fSh09Rf.jpg' },
+  { id: 17, nombre: 'Cinta aislante 10m', precio: 50, img: 'https://i.imgur.com/Yfq5mWr.jpg' },
+  { id: 18, nombre: 'Taladro percutor Makita', precio: 3500, img: 'https://i.imgur.com/6ZyTt7V.jpg' },
+  { id: 19, nombre: 'Guantes de trabajo resistentes', precio: 100, img: 'https://i.imgur.com/6vQF7hL.jpg' },
+  { id: 20, nombre: 'Linterna LED recargable', precio: 400, img: 'https://i.imgur.com/mNKlU0E.jpg' }
+];
+
+
+  let carrito = [];
+
+  function mostrar(seccion) {
+    const secciones = document.querySelectorAll('section');
+    secciones.forEach(sec => sec.classList.remove('active'));
+    document.getElementById(seccion).classList.add('active');
+
+    if (seccion === 'productos') {
+      cargarProductos();
+    } else if (seccion === 'carrito') {
+      mostrarCarrito();
+    }
+  }
+
+  function cargarProductos() {
+    const contenedor = document.getElementById('contenedor-productos');
+    contenedor.innerHTML = '';
+    const filtro = document.getElementById('buscar').value.toLowerCase();
+
+    const productosFiltrados = productos.filter(p => p.nombre.toLowerCase().includes(filtro));
+
+    if (productosFiltrados.length === 0) {
+      contenedor.innerHTML = '<p>No se encontraron productos.</p>';
+      return;
+    }
+
+    productosFiltrados.forEach(p => {
+      const div = document.createElement('div');
+      div.classList.add('producto');
+      div.innerHTML = `
+        <img src="${p.img}" alt="${p.nombre}" />
+        <h3>${p.nombre}</h3>
+        <p>$${p.precio} MXN</p>
+        <button onclick="agregarAlCarrito(${p.id})">Agregar al carrito</button>
+      `;
+      contenedor.appendChild(div);
+    });
+  }
+
+  function filtrarProductos() {
+    cargarProductos();
+  }
+
+  function agregarAlCarrito(id) {
+    const producto = productos.find(p => p.id === id);
+    if (!producto) return;
+
+    const itemCarrito = carrito.find(item => item.id === id);
+    if (itemCarrito) {
+      itemCarrito.cantidad += 1;
+    } else {
+      carrito.push({ ...producto, cantidad: 1 });
+    }
+    alert(`Agregaste "${producto.nombre}" al carrito`);
+  }
+
+  function mostrarCarrito() {
+    const lista = document.getElementById('lista-carrito');
+    lista.innerHTML = '';
+
+    if (carrito.length === 0) {
+      lista.innerHTML = '<p>Tu carrito está vacío.</p>';
+      document.getElementById('total').textContent = '0';
+      return;
+    }
+
+    carrito.forEach(item => {
+      const div = document.createElement('div');
+      div.classList.add('carrito-item');
+      div.innerHTML = `
+        <div class="nombre">${item.nombre}</div>
+        <div class="precio">$${item.precio} MXN</div>
+        <div class="cantidad-controls">
+          <button class="btn-cant" onclick="cambiarCantidad(${item.id}, -1)">-</button>
+          <div class="cantidad">${item.cantidad}</div>
+          <button class="btn-cant" onclick="cambiarCantidad(${item.id}, 1)">+</button>
+        </div>
+        <div class="subtotal">$${item.precio * item.cantidad} MXN</div>
+        <button onclick="eliminarDelCarrito(${item.id})" title="Eliminar producto">×</button>
+      `;
+      lista.appendChild(div);
+    });
+
+    actualizarTotal();
+  }
+
+  function cambiarCantidad(id, cambio) {
+    const item = carrito.find(i => i.id === id);
+    if (!item) return;
+
+    item.cantidad += cambio;
+    if (item.cantidad <= 0) {
+      eliminarDelCarrito(id);
+    } else {
+      mostrarCarrito();
+    }
+  }
+
+  function eliminarDelCarrito(id) {
+    carrito = carrito.filter(item => item.id !== id);
+    mostrarCarrito();
+  }
+
+  function vaciarCarrito() {
+    if (confirm('¿Quieres vaciar todo el carrito?')) {
+      carrito = [];
+      mostrarCarrito();
+    }
+  }
+
+  function actualizarTotal() {
+    const total = carrito.reduce((sum, item) => sum + item.precio * item.cantidad, 0);
+    document.getElementById('total').textContent = total.toFixed(2);
+  }
+
+  // Funciones dummy para registro y login
+  function registrar() {
+    alert('Función de registro no implementada aún');
+  }
+  function login() {
+    alert('Función de inicio de sesión no implementada aún');
+  }
+  function comprar() {
+    if (carrito.length === 0) {
+      alert('Tu carrito está vacío');
+      return;
+    }
+    alert('Compra realizada con éxito. ¡Gracias por comprar en El Martillo de Oro!');
+    carrito = [];
+    mostrarCarrito();
+    mostrar('inicio');
+  }
+
+  // Cargar productos iniciales
+  window.onload = () => {
+    mostrar('inicio');
+  };
+</script>
+</body>
+</html>
